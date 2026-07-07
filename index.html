@@ -8,6 +8,67 @@
   <script src="./windows-flags.js" defer></script>
   <script>
   document.addEventListener("DOMContentLoaded", function () {
+    const headings = Array.from(
+      document.querySelectorAll("h1, h2, h3, h4, h5, h6")
+    );
+
+    const quickSearchHeading = headings.find(function (heading) {
+      return heading.textContent.includes("Quick Search");
+    });
+
+    if (!quickSearchHeading) {
+      return;
+    }
+
+    const otherSections = [
+      "Recently Viewed",
+      "Favourite Destinations",
+      "Need Help?"
+    ];
+
+    let quickSearchCard = quickSearchHeading.parentElement;
+
+    while (quickSearchCard && quickSearchCard.parentElement) {
+      const containerText =
+        quickSearchCard.parentElement.innerText || "";
+
+      const matchingSections = otherSections.filter(function (section) {
+        return containerText.includes(section);
+      }).length;
+
+      if (matchingSections >= 2) {
+        break;
+      }
+
+      quickSearchCard = quickSearchCard.parentElement;
+    }
+
+    if (!quickSearchCard || !quickSearchCard.parentElement) {
+      return;
+    }
+
+    const dashboardRow = quickSearchCard.parentElement;
+
+    quickSearchCard.remove();
+
+    function updateColumns() {
+      if (window.innerWidth >= 1100) {
+        dashboardRow.style.gridTemplateColumns =
+          "repeat(3, minmax(0, 1fr))";
+      } else if (window.innerWidth >= 700) {
+        dashboardRow.style.gridTemplateColumns =
+          "repeat(2, minmax(0, 1fr))";
+      } else {
+        dashboardRow.style.gridTemplateColumns = "1fr";
+      }
+    }
+
+    updateColumns();
+    window.addEventListener("resize", updateColumns);
+  });
+</script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
     const style = document.createElement("style");
 
     style.textContent = `
