@@ -58,7 +58,7 @@
         const image = document.createElement("img");
         image.className = "cross-platform-flag";
         image.src =
-          `https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/flags/4x3/${countryCode}.svg`;
+          `https://cdn.jsdelivr.net/gh/lipis/flag-icons@v7.3.2/flags/4x3/${countryCode}.svg`;
         image.alt = "";
         image.setAttribute("aria-hidden", "true");
         image.decoding = "async";
