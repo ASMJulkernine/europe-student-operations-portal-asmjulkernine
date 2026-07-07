@@ -7,6 +7,132 @@
   <title>Europe Student Operations Portal — Recruitment, Visa & Compliance</title>
   <script src="./windows-flags.js" defer></script>
   <script>
+  (() => {
+    "use strict";
+
+    function addQuickSearchRemovalStyles() {
+      if (document.getElementById("quick-search-removal-styles")) {
+        return;
+      }
+
+      const style = document.createElement("style");
+      style.id = "quick-search-removal-styles";
+
+      style.textContent = `
+        .quick-search-removed-layout {
+          grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        }
+
+        @media (max-width: 1000px) {
+          .quick-search-removed-layout {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+        }
+
+        @media (max-width: 700px) {
+          .quick-search-removed-layout {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `;
+
+      document.head.appendChild(style);
+    }
+
+    function removeQuickSearchPanel() {
+      const quickSearchInput = Array.from(
+        document.querySelectorAll("input")
+      ).find(function (input) {
+        const placeholder =
+          input.getAttribute("placeholder") || "";
+
+        return placeholder
+          .toLowerCase()
+          .includes("type to search");
+      });
+
+      if (!quickSearchInput) {
+        return;
+      }
+
+      let quickSearchCard = quickSearchInput.parentElement;
+
+      while (
+        quickSearchCard &&
+        quickSearchCard !== document.body
+      ) {
+        const cardText = (
+          quickSearchCard.textContent || ""
+        )
+          .replace(/\s+/g, " ")
+          .trim()
+          .toLowerCase();
+
+        if (
+          cardText.includes("quick search") &&
+          !cardText.includes("recently viewed")
+        ) {
+          break;
+        }
+
+        quickSearchCard = quickSearchCard.parentElement;
+      }
+
+      if (
+        !quickSearchCard ||
+        quickSearchCard === document.body
+      ) {
+        return;
+      }
+
+      const dashboardRow = quickSearchCard.parentElement;
+
+      quickSearchCard.remove();
+
+      if (dashboardRow) {
+        dashboardRow.classList.add(
+          "quick-search-removed-layout"
+        );
+      }
+    }
+
+    function startQuickSearchRemoval() {
+      addQuickSearchRemovalStyles();
+      removeQuickSearchPanel();
+
+      let updateScheduled = false;
+
+      const observer = new MutationObserver(function () {
+        if (updateScheduled) {
+          return;
+        }
+
+        updateScheduled = true;
+
+        requestAnimationFrame(function () {
+          updateScheduled = false;
+          removeQuickSearchPanel();
+        });
+      });
+
+      observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener(
+        "DOMContentLoaded",
+        startQuickSearchRemoval,
+        { once: true }
+      );
+    } else {
+      startQuickSearchRemoval();
+    }
+  })();
+</script>
+  <script>
   document.addEventListener("DOMContentLoaded", function () {
     const headings = Array.from(
       document.querySelectorAll("h1, h2, h3, h4, h5, h6")
