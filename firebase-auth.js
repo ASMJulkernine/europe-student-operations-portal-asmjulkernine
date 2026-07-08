@@ -25,12 +25,13 @@ import {
   and paste the firebaseConfig code you copied from Firebase.
 */
 const firebaseConfig = {
-  apiKey: "AIza...",
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project",
-  storageBucket: "your-project.firebasestorage.app",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef"
+  apiKey: "AIzaSy...",
+  authDomain: "europe-study-ops-portal.firebaseapp.com",
+  projectId: "europe-study-ops-portal",
+  storageBucket: "europe-study-ops-portal.firebasestorage.app",
+  messagingSenderId: "442213813326",
+  appId: "1:442213813326:web:...",
+  measurementId: "G-..."
 };
 
 const app = initializeApp(firebaseConfig);
